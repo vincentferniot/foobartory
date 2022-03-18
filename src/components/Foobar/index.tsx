@@ -87,25 +87,24 @@ export default function Foobar() {
         }
         default:
           // IDLE status
-          console.log(IDLE);
+          // console.log(IDLE);
           return;
       }
     }
   }, [status, task, start]);
 
   useEffect(() => {
-    if (!task) {
-      return; 
+    if (task) {
+      setTimeout(() => {
+        setStatus(IDLE);
+      }, 1000);
     }
 
-    if (timeout.current) {
-      clearTimeout(timeout.current);
+    return () => {
+      if (timeout.current) {
+        clearTimeout(timeout.current);
+      }
     }
-
-    setTimeout(() => {
-      setStatus(IDLE);
-    }, 1000);
-
   }, [task]);
 
   const handleClick = (value: string) => (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -135,18 +134,21 @@ export default function Foobar() {
       <small>task: {task}</small>
       <div className="foobar__controls">
         <button
+          data-testid="mine-foo"
           type="button"
           onClick={handleClick(MINE_FOO)}
         >
           mine foo
         </button>
         <button
+          data-testid="mine-bar"
           type="button"
           onClick={handleClick(MINE_BAR)}
         >
           mine bar
         </button>
         <button
+          data-testid="build-foobar"
           type="button"
           onClick={handleClick(BUILD_FOOBAR)}
           disabled={!canBuildOrBuyFoobar()}
