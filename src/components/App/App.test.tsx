@@ -1,29 +1,20 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import App from '.';
-import { MinerProvider } from 'contexts/miner';
-
-// Helper function to render App within its context
-function renderApp() {
-  return render(
-    <MinerProvider>
-      <App />
-    </MinerProvider>
-  );
-}
+import { renderWithContextProviders } from 'helpers/tests';
 
 describe('App', () => {
   it('should render', async () => {
-    renderApp();
+    renderWithContextProviders(App);
     expect(screen.getByTestId('app')).toBeInTheDocument();
   });
 
   it('should render with Header', async () => {
-    renderApp();
+    renderWithContextProviders(App);
     expect(screen.getByTestId('header')).toBeInTheDocument();
   });
 
   it('should render with 2 foobars at start', async () => {
-    renderApp();
+    renderWithContextProviders(App);
     expect(screen.getAllByTestId('foobar')).toHaveLength(2);
   });
 });
