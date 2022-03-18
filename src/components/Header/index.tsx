@@ -9,6 +9,7 @@ export default function Header() {
       <div className="header__total">bar: {state.bar}</div>
       <div className="header__button">
         <button
+          data-testid="build-foobar"
           type="button"
           onClick={() => buyFoobar()}
           disabled={!canBuildOrBuyFoobar()}
