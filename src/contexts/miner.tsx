@@ -55,7 +55,7 @@ const minerReducer = (state: State, action: Action) => {
   }
 };
 
-const MinerContext = createContext({} as MinerInterface);
+export const MinerContext = createContext({} as MinerInterface);
 
 function MinerProvider(props: object) {
   const initialState = {
