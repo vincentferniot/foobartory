@@ -1,0 +1,23 @@
+.foobar {
+  position: relative;
+  padding: 2rem;
+  background: #fafafa;
+  border: 1px solid #eaeaea;
+}
+
+.foobar.is-mining-foo {
+  background: #f0f;
+}
+
+.foobar.is-mining-bar {
+  background: rgb(0, 68, 255);
+}
+.foobar.is-building {
+  background: rgb(58, 187, 8);
+}
+
+.foobar .transferring {
+  background: rgba(0, 0, 0, 0.4);
+  position: absolute;
+  inset: 0 0 0 0;
+}
