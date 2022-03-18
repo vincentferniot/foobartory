@@ -1,9 +1,29 @@
 import { render, screen } from '@testing-library/react';
 import App from '.';
+import { MinerProvider } from 'contexts/miner';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const foobarElement = screen.getByText(/foobar/i);
-  expect(foobarElement).toBeInTheDocument();
-  // expect(foobarElement).toHaveLength(2);
+// Helper function to render App within its context
+function renderApp() {
+  return render(
+    <MinerProvider>
+      <App />
+    </MinerProvider>
+  );
+}
+
+describe('App', () => {
+  it('should render', async () => {
+    renderApp();
+    expect(screen.getByTestId('app')).toBeInTheDocument();
+  });
+
+  it('should render with Header', async () => {
+    renderApp();
+    expect(screen.getByTestId('header')).toBeInTheDocument();
+  });
+
+  it('should render with 2 foobars at start', async () => {
+    renderApp();
+    expect(screen.getAllByTestId('foobar')).toHaveLength(2);
+  });
 });

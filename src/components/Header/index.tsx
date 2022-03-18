@@ -4,7 +4,7 @@ export default function Header() {
   const { canBuildOrBuyFoobar, buyFoobar, state } = useMiner();
 
   return (
-    <div className="header">
+    <div className="header" data-testid="header">
       <div className="header__total">foo: {state.foo}</div>
       <div className="header__total">bar: {state.bar}</div>
       <div className="header__button">

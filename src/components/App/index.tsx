@@ -9,7 +9,7 @@ function App() {
   const { state: { foobars } } = useMiner();
 
   return (
-    <div className="App">
+    <div className="App" data-testid="app">
       <Header />
       <Factory>
         {foobars.map(foobar => (

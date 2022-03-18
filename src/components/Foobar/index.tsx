@@ -129,7 +129,7 @@ export default function Foobar() {
   );
 
   return (
-    <div className={classname}>
+    <div className={classname} data-testid="foobar">
       {isTransferring && <div className="transferring">Transferring...</div>}
       <h2>Foobar</h2>
       <small>task: {task}</small>
