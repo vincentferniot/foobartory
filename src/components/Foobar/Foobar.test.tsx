@@ -19,6 +19,11 @@ describe('Foobar', () => {
     expect(screen.getByTestId('build-foobar')).toBeDisabled();
   });
 
+  it('should have build button disabled with canBuildOrBuyFoobar returning false', () => {
+    renderWithProvider(<Foobar />, { providerProps: { value: { canBuildOrBuyFoobar: () => false }}}, MinerContext.Provider);
+    expect(screen.getByTestId('build-foobar')).toBeDisabled();
+  });
+
   it('should have build button enabled with canBuildOrBuyFoobar returning true', () => {
     renderWithProvider(<Foobar />, { providerProps: { value: { canBuildOrBuyFoobar: () => true }}}, MinerContext.Provider);
     expect(screen.getByTestId('build-foobar')).toBeEnabled();
