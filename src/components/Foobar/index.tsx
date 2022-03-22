@@ -7,22 +7,28 @@ import {
 import classNames from 'classnames';
 import { randomMinMax } from 'helpers/utils';
 import { useMiner } from 'contexts/miner';
+import {
+  IDLE,
+  MINING_FOO,
+  MINING_BAR,
+  BUILDING_FOOBAR,
+  TRANSFERRING,
+  MINE_FOO,
+  MINE_BAR,
+  BUILD_FOOBAR,
+} from 'helpers/constants';
 import './style.css';
-
-const IDLE = 'IDLE';
-const MINING_FOO = 'MINING_FOO';
-const MINING_BAR = 'MINING_BAR';
-const BUILDING_FOOBAR = 'BUILDING_FOOBAR';
-const TRANSFERRING = 'TRANSFERRING';
-
-const MINE_FOO = 'MINE_FOO';
-const MINE_BAR = 'MINE_BAR';
-const BUILD_FOOBAR = 'BUILD_FOOBAR';
 
 export default function Foobar() {
   const [ status, setStatus ] = useState<string>(IDLE);
   const [ task, setTask ] = useState<string>('');
-  const { buildFoobar, canBuildOrBuyFoobar, dispatch } = useMiner();
+  const {
+    buildFoobar,
+    canBuildOrBuyFoobar,
+    dispatch,
+    hasReachedMaxFoobars,
+    state: { foobars },
+  } = useMiner();
 
   let timeout: { current: NodeJS.Timeout | null } = useRef(null);
 
@@ -87,12 +93,12 @@ export default function Foobar() {
         }
         default:
           // IDLE status
-          // console.log(IDLE);
           return;
       }
     }
   }, [status, task, start]);
 
+  // handles change of task
   useEffect(() => {
     if (task) {
       setTimeout(() => {
@@ -106,6 +112,17 @@ export default function Foobar() {
       }
     }
   }, [task]);
+
+  // handles end of game
+  useEffect(() => {
+    if (hasReachedMaxFoobars()) {
+      setStatus(IDLE);
+      setTask('');
+      if (timeout.current) {
+        clearTimeout(timeout.current);
+      }
+    }
+  }, [foobars, hasReachedMaxFoobars]);
 
   const handleClick = (value: string) => (event: React.MouseEvent<HTMLButtonElement>) => {
     if (value === task) {

@@ -29,7 +29,7 @@ describe('Foobar', () => {
     expect(screen.getByTestId('build-foobar')).toBeEnabled();
   });
 
-  it('should display `Transferring...` when click on foo button', () => {
+  it('should display `Transferring...` when click on foo button', async () => {
     renderWithAllProviders(Foobar);
     const button = screen.getByTestId('mine-foo');
 
@@ -38,6 +38,6 @@ describe('Foobar', () => {
     expect(screen.getByText('Transferring...')).toBeInTheDocument();
     
     // TODO: fix this test, simulate a timeout
-    // expect(screen.queryByText('Transferring...')).not.toBeInTheDocument();
+    // expect(await screen.findByText('Transferring...')).not.toBeInTheDocument();
   });
 });

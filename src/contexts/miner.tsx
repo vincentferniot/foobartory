@@ -7,15 +7,17 @@ import {
 } from 'react';
 
 import { randomMinMax } from 'helpers/utils';
+import { MAX_FOOBARS } from 'helpers/constants';
 
 interface Foobar {
   id: number
 }
 
-interface MinerInterface {
+export interface MinerInterface {
   buildFoobar: () => Promise<string>,
   buyFoobar: () => void,
   canBuildOrBuyFoobar: () => Boolean,
+  hasReachedMaxFoobars: () => Boolean,
   dispatch: Dispatch<Action>,
   state: State,
 }
@@ -29,10 +31,17 @@ interface State {
 type Action =
   | { type: 'increment'; key: 'foo' | 'bar'; amount?: number }
   | { type: 'decrement'; key: 'foo' | 'bar'; amount?: number }
-  | { type: 'addFoobar'; };
+  | { type: 'addFoobar'; }
+  | { type: 'reset'; };
 
-const minerReducer = (state: State, action: Action) => {
-  console.log('reducer', action)
+
+const initialState = {
+  foo: 0,
+  bar: 0,
+  foobars: [{ id: 1 }, { id: 2 }]
+};
+
+const reducer = (state: State, action: Action) => {
   switch (action.type) {
     case 'increment':
       return { 
@@ -50,23 +59,24 @@ const minerReducer = (state: State, action: Action) => {
         foobars: [...state.foobars, { id: state.foobars.length + 1 }]
       };
     }
+    case 'reset': {
+      return {
+        ...initialState,
+      };
+    }
     default:
       throw new Error();
   }
 };
 
-export const MinerContext = createContext({} as MinerInterface);
+const MinerContext = createContext({} as MinerInterface);
 
 function MinerProvider(props: object) {
-  const initialState = {
-    foo: 0,
-    bar: 0,
-    foobars: [{ id: 1 }, { id: 2 }]
-  };
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-  const [state, dispatch] = useReducer(minerReducer, initialState);
+  const canBuildOrBuyFoobar = () => (state.foo >= 6 && state.bar >= 3) && !hasReachedMaxFoobars();
 
-  const canBuildOrBuyFoobar = () => state.foo >= 6 && state.bar >= 3;
+  const hasReachedMaxFoobars = () => state.foobars.length >= MAX_FOOBARS;
 
   const buildFoobar = useCallback(async () => {
     const delay = 2000;
@@ -102,6 +112,7 @@ function MinerProvider(props: object) {
         buildFoobar,
         buyFoobar,
         canBuildOrBuyFoobar,
+        hasReachedMaxFoobars,
         dispatch,
         state,
       }}
@@ -119,4 +130,10 @@ function useMiner() {
   return context
 }
 
-export { MinerProvider, useMiner };
+export {
+  MinerProvider,
+  useMiner,
+  MinerContext,
+  initialState,
+  reducer,
+};
