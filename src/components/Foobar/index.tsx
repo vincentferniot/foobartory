@@ -44,7 +44,6 @@ export default function Foobar() {
 
 
   const start = useCallback(async () => {
-    console.log('start')
     switch(task) {
       case MINE_FOO: {
         setStatus(MINING_FOO);

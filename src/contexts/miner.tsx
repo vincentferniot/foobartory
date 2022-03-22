@@ -73,10 +73,17 @@ const MinerContext = createContext({} as MinerInterface);
 
 function MinerProvider(props: object) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { foo, bar, foobars } = state;
 
-  const canBuildOrBuyFoobar = () => (state.foo >= 6 && state.bar >= 3) && !hasReachedMaxFoobars();
-
-  const hasReachedMaxFoobars = () => state.foobars.length >= MAX_FOOBARS;
+  const hasReachedMaxFoobars = useCallback(() => 
+    (foobars.length >= MAX_FOOBARS),
+    [foobars],
+  );
+  
+  const canBuildOrBuyFoobar = useCallback(() => 
+    (foo >= 6 && bar >= 3 && !hasReachedMaxFoobars()),
+    [foo, bar, hasReachedMaxFoobars],
+  );
 
   const buildFoobar = useCallback(async () => {
     const delay = 2000;
@@ -121,6 +128,10 @@ function MinerProvider(props: object) {
   );
 }
 
+/**
+ * Custom hook exposing the miner context
+ * @returns {MinerInterface}
+ */
 function useMiner() {
   const context = useContext(MinerContext)
   if (context === undefined) {
