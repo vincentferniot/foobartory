@@ -3,7 +3,7 @@ import { useMiner } from 'contexts/miner';
 import './style.css';
 
 type FactoryProps = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export default function Factory({ children }: FactoryProps) {
@@ -13,9 +13,9 @@ export default function Factory({ children }: FactoryProps) {
   };
 
   return (
-    <div className='factory'>
+    <div className="factory" data-testid="factory">
       {hasReachedMaxFoobars() && (
-        <div className='factory__message'>
+        <div className="factory__message" data-testid="factory-message">
           <p>You have reached the max foobars!</p>
           <button type="button" onClick={handleClick}>Play again</button>
         </div>
