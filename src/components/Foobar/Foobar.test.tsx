@@ -20,12 +20,36 @@ describe('Foobar', () => {
   });
 
   it('should have build button disabled with canBuildOrBuyFoobar returning false', () => {
-    renderWithProvider(<Foobar />, { providerProps: { value: { canBuildOrBuyFoobar: () => false }}}, MinerContext.Provider);
+    renderWithProvider(
+      <Foobar />,
+      {
+        providerProps: {
+          value: {
+            canBuildOrBuyFoobar: () => false,
+            hasReachedMaxFoobars: () => false,
+            state: {}
+          }
+        }
+      },
+      MinerContext.Provider
+    );
     expect(screen.getByTestId('build-foobar')).toBeDisabled();
   });
 
   it('should have build button enabled with canBuildOrBuyFoobar returning true', () => {
-    renderWithProvider(<Foobar />, { providerProps: { value: { canBuildOrBuyFoobar: () => true }}}, MinerContext.Provider);
+    renderWithProvider(
+      <Foobar />,
+      {
+        providerProps: {
+          value: {
+            canBuildOrBuyFoobar: () => true,
+            hasReachedMaxFoobars: () => false,
+            state: {},
+          }
+        }
+      },
+      MinerContext.Provider
+    );
     expect(screen.getByTestId('build-foobar')).toBeEnabled();
   });
 
@@ -36,8 +60,5 @@ describe('Foobar', () => {
     expect(screen.queryByText('Transferring...')).not.toBeInTheDocument();
     fireEvent.click(button);
     expect(screen.getByText('Transferring...')).toBeInTheDocument();
-    
-    // TODO: fix this test, simulate a timeout
-    // expect(await screen.findByText('Transferring...')).not.toBeInTheDocument();
   });
 });
