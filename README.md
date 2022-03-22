@@ -1,4 +1,32 @@
-# Getting Started with Create React App
+# Foobartory
+
+Il s'agit d'une application créée avec Create React App, pour les commandes [voir plus bas](#create-react-app-commands)
+
+Afin de lancer le minage, il faut choisir quelle opération on souhaite faire effectuer à chaque robot. Une fois le transfert terminé, le robot commence à miner. 
+Au départ , on ne peut pas assembler de nouveau robot ou en acheter. Il faut suffisamment de foo et de bar pour que les boutons soient actifs.
+
+Une fois la limite de 20 robots atteinte, tous les robots arrêtent leur tâche en-cours et un bouton permet de recommencer une nouvelle partie.
+## Structure de l'application
+
+J'ai choisi de partir sur une gestion du state global via un contexte. Il m'a permis d'avoir une API simple pour gérer les tâches et d'exposer cette API via un hook custom `useMiner`
+
+Le context `miner.tsx` utilise le hook `useReducer` pour gérer les actions d'incrémentation des foos et bars. J'ai d'abord tenté de faire un state "classique" mais les timers aléatoires de minage de bars créaient un comportement hératique au niveau de l'affichage. Le souci venait des fonctions de l'API que je passais, qui mémorisaient la valeur du state à un instant T (comme toute closure) et faisait l'incrément à partir de cette valeur. Le reducer s'est donc imposé de lui-même.
+
+## Helpers
+
+Dans ce dossiers, on retrouve les constantes utilisées dans l'application, un fichier d'utils et surtout des fonctions utilitaires pour les tests. Ces dernières permettent d'englober un composant dans un ou plusieurs Provider suivant les cas de tests.
+
+## Améliorations
+
+Voici quelques axes d'amélioration pour cette application
+
+- Design
+- Gestion automatique du minage
+- API/service/hook custom pour la fonction `mine` du composant `Foobar`
+- State manager pour la gestion du state
+
+
+# Create React App commands
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
